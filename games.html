@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stomach Pain Save | Mini Games</title>
+  <link rel="stylesheet" href="stomach_pain.css" />
+</head>
+<body class="games-page">
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">🚻</span>
+        <div class="brand-text">
+          <div class="brand-name">Stomach Pain Save</div>
+          <div class="brand-sub">腹痛持ちのための駅トイレマップ</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a class="btn ghost" href="Stomach_pain_save_point.html">戻る</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="games-wrap">
+    <div class="container">
+      <div class="section-head">
+        <h2>Mini Games</h2>
+        <p class="muted">短時間で遊べるミニゲーム。</p>
+      </div>
+
+      <div class="games-grid">
+        <section class="game-card" aria-labelledby="mine-title">
+          <div class="game-head">
+            <h3 id="mine-title">マインスイーパー</h3>
+            <button class="btn small" type="button" id="mine-reset">リセット</button>
+          </div>
+          <div class="game-board mine-board" id="mine-board" aria-label="マインスイーパー盤面"></div>
+          <p class="game-status" id="mine-status">15x15 / 地雷40</p>
+        </section>
+
+        <section class="game-card" aria-labelledby="memory-title">
+          <div class="game-head">
+            <h3 id="memory-title">絵合わせ</h3>
+            <button class="btn small" type="button" id="memory-reset">リセット</button>
+          </div>
+          <div class="game-board memory-board" id="memory-board" aria-label="絵合わせ盤面"></div>
+          <p class="game-status" id="memory-status">4x4 / 8ペア</p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const mineBoard = document.getElementById("mine-board");
+    const mineStatus = document.getElementById("mine-status");
+    const mineReset = document.getElementById("mine-reset");
+
+    const mineConfig = { size: 15, mines: 40 };
+    let mineState = [];
+    let mineRevealed = 0;
+    let mineOver = false;
+    let mineFirstClick = true;
+
+    const buildMineBoard = () => {
+      mineBoard.innerHTML = "";
+      mineState = [];
+      mineRevealed = 0;
+      mineOver = false;
+      mineStatus.textContent = "15x15 / 地雷40";
+      mineFirstClick = true;
+
+      const total = mineConfig.size * mineConfig.size;
+      const mines = new Set();
+      while (mines.size < mineConfig.mines) {
+        mines.add(Math.floor(Math.random() * total));
+      }
+
+      for (let i = 0; i < total; i += 1) {
+        const hasMine = mines.has(i);
+        mineState.push({ mine: hasMine, revealed: false });
+        const tile = document.createElement("button");
+        tile.className = "tile";
+        tile.type = "button";
+        tile.dataset.index = String(i);
+        let pressTimer = null;
+        tile.addEventListener("click", () => {
+          if (tile.dataset.longpress === "1") {
+            tile.dataset.longpress = "0";
+            return;
+          }
+          revealMineTile(i, tile);
+        });
+        tile.addEventListener("pointerdown", () => {
+          pressTimer = setTimeout(() => {
+            toggleFlag(i, tile);
+            tile.dataset.longpress = "1";
+          }, 450);
+        });
+        tile.addEventListener("pointerup", () => {
+          if (pressTimer) {
+            clearTimeout(pressTimer);
+          }
+        });
+        tile.addEventListener("pointerleave", () => {
+          if (pressTimer) {
+            clearTimeout(pressTimer);
+          }
+        });
+        tile.addEventListener("contextmenu", (event) => {
+          event.preventDefault();
+        });
+        mineBoard.appendChild(tile);
+      }
+    };
+
+    const countAdjacentMines = (index) => {
+      const size = mineConfig.size;
+      const row = Math.floor(index / size);
+      const col = index % size;
+      let count = 0;
+      for (let r = row - 1; r <= row + 1; r += 1) {
+        for (let c = col - 1; c <= col + 1; c += 1) {
+          if (r < 0 || c < 0 || r >= size || c >= size) continue;
+          const idx = r * size + c;
+          if (mineState[idx].mine) count += 1;
+        }
+      }
+      return count;
+    };
+
+    const pickInitialIndex = (fallbackIndex) => {
+      const size = mineConfig.size;
+      const centerRow = Math.floor(size / 2);
+      const centerCol = Math.floor(size / 2);
+      const candidates = [];
+      for (let i = 0; i < mineState.length; i += 1) {
+        if (mineState[i].mine) continue;
+        const row = Math.floor(i / size);
+        const col = i % size;
+        const dist = Math.abs(centerRow - row) + Math.abs(centerCol - col);
+        candidates.push({ i, dist });
+      }
+      candidates.sort((a, b) => a.dist - b.dist);
+      let oneIndex = -1;
+      for (const cand of candidates) {
+        const count = countAdjacentMines(cand.i);
+        if (count === 0) {
+          return cand.i;
+        }
+        if (count === 1 && oneIndex === -1) {
+          oneIndex = cand.i;
+        }
+      }
+      if (oneIndex !== -1) return oneIndex;
+      return fallbackIndex;
+    };
+
+    const toggleFlag = (index, tile) => {
+      if (mineOver || mineState[index].revealed) return;
+      const flagged = tile.classList.toggle("flag");
+      tile.textContent = flagged ? "F" : "";
+    };
+
+    const openTile = (index, tile) => {
+      if (mineState[index].revealed) return false;
+      mineState[index].revealed = true;
+      tile.classList.add("revealed");
+      tile.classList.remove("flag");
+      const count = countAdjacentMines(index);
+      tile.textContent = count === 0 ? "" : String(count);
+      mineRevealed += 1;
+      return count;
+    };
+
+    const revealZeroCluster = (startIndex) => {
+      const size = mineConfig.size;
+      const queue = [startIndex];
+      const visited = new Set();
+      while (queue.length) {
+        const current = queue.shift();
+        if (visited.has(current)) continue;
+        visited.add(current);
+        const tile = mineBoard.querySelector(`.tile[data-index='${current}']`);
+        if (!tile || mineState[current].mine) continue;
+        const count = openTile(current, tile);
+        if (count !== 0) continue;
+        const row = Math.floor(current / size);
+        const col = current % size;
+        for (let r = row - 1; r <= row + 1; r += 1) {
+          for (let c = col - 1; c <= col + 1; c += 1) {
+            if (r < 0 || c < 0 || r >= size || c >= size) continue;
+            const idx = r * size + c;
+            if (!visited.has(idx)) {
+              queue.push(idx);
+            }
+          }
+        }
+      }
+    };
+
+    const revealMineTile = (index, tile) => {
+      if (mineOver || mineState[index].revealed) return;
+      if (tile.classList.contains("flag")) return;
+      if (mineFirstClick) {
+        const picked = pickInitialIndex(index);
+        mineFirstClick = false;
+        const pickedTile = mineBoard.querySelector(`.tile[data-index='${picked}']`);
+        if (pickedTile) {
+          revealMineTile(picked, pickedTile);
+        }
+        return;
+      }
+      if (mineState[index].mine) {
+        tile.classList.add("revealed", "mine");
+        tile.textContent = "X";
+        mineOver = true;
+        mineStatus.textContent = "ゲームオーバー";
+        revealAllMines();
+        return;
+      }
+
+      const count = openTile(index, tile);
+      if (count === 0) {
+        revealZeroCluster(index);
+      }
+
+      if (mineRevealed === mineConfig.size * mineConfig.size - mineConfig.mines) {
+        mineStatus.textContent = "クリア！";
+        mineOver = true;
+      }
+    };
+
+    const revealAllMines = () => {
+      const tiles = mineBoard.querySelectorAll(".tile");
+      tiles.forEach((tile, idx) => {
+        if (mineState[idx].mine) {
+          tile.classList.add("revealed", "mine");
+          tile.textContent = "X";
+        }
+      });
+    };
+
+    mineReset.addEventListener("click", buildMineBoard);
+    buildMineBoard();
+
+    const memoryBoard = document.getElementById("memory-board");
+    const memoryStatus = document.getElementById("memory-status");
+    const memoryReset = document.getElementById("memory-reset");
+    const memoryIcons = ["▲", "●", "■", "★", "◆", "❤", "✿", "☂"];
+    let memoryTiles = [];
+    let memoryFlipped = [];
+    let memoryMatched = 0;
+    let memoryLocked = false;
+
+    const buildMemoryBoard = () => {
+      memoryBoard.innerHTML = "";
+      memoryTiles = [];
+      memoryFlipped = [];
+      memoryMatched = 0;
+      memoryLocked = false;
+      memoryStatus.textContent = "4x4 / 8ペア";
+
+      const pairs = [...memoryIcons, ...memoryIcons]
+        .sort(() => Math.random() - 0.5);
+
+      pairs.forEach((icon, index) => {
+        const tile = document.createElement("button");
+        tile.className = "tile";
+        tile.type = "button";
+        tile.dataset.index = String(index);
+        tile.dataset.icon = icon;
+        tile.addEventListener("click", () => flipMemoryTile(tile));
+        memoryTiles.push(tile);
+        memoryBoard.appendChild(tile);
+      });
+    };
+
+    const flipMemoryTile = (tile) => {
+      if (memoryLocked || tile.classList.contains("matched") || tile.classList.contains("revealed")) {
+        return;
+      }
+      tile.classList.add("revealed");
+      tile.textContent = tile.dataset.icon;
+      memoryFlipped.push(tile);
+      if (memoryFlipped.length === 2) {
+        checkMemoryPair();
+      }
+    };
+
+    const checkMemoryPair = () => {
+      const [first, second] = memoryFlipped;
+      if (!first || !second) return;
+      if (first.dataset.icon === second.dataset.icon) {
+        first.classList.add("matched");
+        second.classList.add("matched");
+        memoryMatched += 1;
+        memoryFlipped = [];
+        if (memoryMatched === memoryIcons.length) {
+          memoryStatus.textContent = "クリア！";
+        }
+        return;
+      }
+      memoryLocked = true;
+      setTimeout(() => {
+        first.classList.remove("revealed");
+        second.classList.remove("revealed");
+        first.textContent = "";
+        second.textContent = "";
+        memoryFlipped = [];
+        memoryLocked = false;
+      }, 700);
+    };
+
+    memoryReset.addEventListener("click", buildMemoryBoard);
+    buildMemoryBoard();
+  </script>
+</body>
+</html>
