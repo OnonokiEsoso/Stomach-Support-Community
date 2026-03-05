@@ -8646,45 +8646,18 @@
         <div class="section-head">
           <h2>情報提供・修正依頼</h2>
           <p class="muted">
-            送信先（メール/フォーム/スプレッドシート等）はまだ未設定の想定。まずはUIだけ作ってあるよ。
+            情報提供はGoogleフォームで受け付けています。下のボタンから入力をお願いします。
           </p>
         </div>
 
-        <form class="form" action="#" method="post">
-          <div class="form-row">
-            <label for="station">駅名</label>
-            <input id="station" name="station" type="text" placeholder="例：〇〇駅" autocomplete="off" />
-          </div>
-
-          <div class="form-row">
-            <label for="area">改札内/外</label>
-            <select id="area" name="area">
-              <option value="">選択してください</option>
-              <option value="inside">改札内</option>
-              <option value="outside">改札外</option>
-              <option value="both">両方</option>
-            </select>
-          </div>
-
-          <div class="form-row">
-            <label for="desc">場所・行き方・設備など</label>
-            <textarea id="desc" name="desc" rows="6" placeholder="例：改札入って右、階段横。多目的あり、ベビー台あり、など"></textarea>
-          </div>
-
-          <div class="form-row">
-            <label for="contact">連絡先（任意）</label>
-            <input id="contact" name="contact" type="text" placeholder="返信が必要な場合のみ（例：メール）" autocomplete="off" />
-          </div>
-
-          <div class="form-actions">
-            <button class="btn primary" type="submit">送信（現在はダミー）</button>
-            <a class="btn ghost" href="#stations">駅一覧へ戻る</a>
-          </div>
-
-          <p class="tiny muted">
-            ※このフォームはサンプルです。実際に送信できるようにするなら、Googleフォーム/自前サーバ/メール送信などの選択が必要。
+        <div class="form">
+          <p class="muted">
+            駅トイレ情報の追加・修正は、以下のGoogleフォームから送信してください。
           </p>
-        </form>
+          <div class="form-actions">
+            <a class="btn primary" href="https://docs.google.com/forms/d/e/1FAIpQLSfE1SurrAHd1WChl5tdb-YxDUAkNixC5WMAzJnIw90-zG3ErQ/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer">Googleフォームを開く</a>
+          </div>
+        </div>
       </div>
     </section>
 
