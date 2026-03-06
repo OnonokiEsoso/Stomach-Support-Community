@@ -8722,7 +8722,7 @@
     <div class="container footer-inner">
       <div class="footer-left">
         <div class="footer-title">Stomach Pain Save</div>
-        <div class="tiny muted">腹痛持ちのための駅トイレ情報まとめ Ver.1.1.1</div>
+        <div class="tiny muted">腹痛持ちのための駅トイレ情報まとめ Ver.1.1.2</div>
       </div>
       <div class="footer-right tiny">
         <a href="about.html">このサイトについて</a>
@@ -8969,17 +8969,29 @@
       });
     };
 
+    const hasMapLocation = (stationName) => {
+      const key = canonicalStationName(stationName);
+      return Boolean(stationCoordinateMap[key]) || Boolean(findStationPinButton(stationName));
+    };
+
     cardMapLinks.forEach((link) => {
+      const card = link.closest(".card");
+      const stationName = card?.dataset.station || "";
+      if (!hasMapLocation(stationName)) {
+        link.remove();
+        return;
+      }
+
       link.addEventListener("click", (event) => {
         event.preventDefault();
-        const card = link.closest(".card");
-        const stationName = card?.dataset.station || "";
-        const stationKey = canonicalStationName(stationName);
+        const currentCard = link.closest(".card");
+        const currentStationName = currentCard?.dataset.station || "";
+        const stationKey = canonicalStationName(currentStationName);
         const coord = stationCoordinateMap[stationKey];
         if (coord) {
-          setMapCenter(coord.lat, coord.lon, `${normalizeStationName(stationName)}を表示中`);
+          setMapCenter(coord.lat, coord.lon, `${normalizeStationName(currentStationName)}を表示中`);
         } else {
-          const pinButton = findStationPinButton(stationName);
+          const pinButton = findStationPinButton(currentStationName);
           if (pinButton) {
             pinButton.click();
           }
