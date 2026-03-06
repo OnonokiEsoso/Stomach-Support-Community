@@ -385,7 +385,7 @@
                 <a class="btn small ghost" href="#submit">修正依頼</a>
               </div>
               <p class="tiny muted photo-credit">
-                Photo: Nyao148 / CC BY 3.0
+                Photo: <a href="https://commons.wikimedia.org/wiki/File:Akabane-Sta-East.jpg" target="_blank" rel="noopener noreferrer">Nyao148</a> / <a href="https://creativecommons.org/licenses/by/3.0/deed.ja" target="_blank" rel="noopener noreferrer">CC BY 3.0</a>
               </p>
             </div>
           </article>
@@ -8650,6 +8650,8 @@
         </div>
         <div class="map-stations" role="group" aria-label="駅の位置を表示">
           <button class="btn small ghost" type="button" data-lat="35.68083" data-lon="139.76694">東京駅</button>
+          <button class="btn small ghost" type="button" data-lat="35.7777" data-lon="139.7201">赤羽駅</button>
+          <button class="btn small ghost" type="button" data-lat="35.7289" data-lon="139.7101">池袋駅</button>
           <button class="btn small ghost" type="button" data-lat="35.69056" data-lon="139.69944">新宿駅</button>
           <button class="btn small ghost" type="button" data-lat="35.90639" data-lon="139.62389">大宮駅</button>
           <button class="btn small ghost" type="button" data-lat="35.1707722" data-lon="136.8816028">名古屋駅</button>
@@ -8773,7 +8775,9 @@
     const emergencyLink = document.getElementById("emergency-link");
 
     const geoBtn = document.getElementById("geo-btn");
+    const mapSection = document.getElementById("map");
     const stationPinButtons = Array.from(document.querySelectorAll(".map-stations [data-lat]"));
+    const cardMapLinks = Array.from(document.querySelectorAll('.card .card-actions a[aria-label*="地図リンク"]'));
     const lineSelect = document.getElementById("line-select");
     const stationList = document.getElementById("station-list");
     const headerNavOffsetLinks = Array.from(
@@ -8915,6 +8919,27 @@
         const lon = Number(button.dataset.lon);
         const label = `${button.textContent}を表示中`;
         setMapCenter(lat, lon, label);
+      });
+    });
+
+    const findStationPinButton = (stationName) => {
+      const key = canonicalStationName(stationName);
+      return stationPinButtons.find((button) => {
+        const buttonName = canonicalStationName(button.textContent || "");
+        return buttonName === key;
+      });
+    };
+
+    cardMapLinks.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        const card = link.closest(".card");
+        const stationName = card?.dataset.station || "";
+        const pinButton = findStationPinButton(stationName);
+        if (pinButton) {
+          pinButton.click();
+        }
+        scrollWithHeaderOffset(mapSection);
       });
     });
 
