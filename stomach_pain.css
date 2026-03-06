@@ -65,12 +65,40 @@ body.station-page-nagoya {
     url("駅写真/View_of_Nagoya_Station,_Tsubaki-cho_Nakamura_Ward_Nagoya_2022.jpg") center / cover no-repeat fixed;
 }
 
+body.station-page-yokohama {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0.06)),
+    url("駅写真/Yokohama_Station_20240630.jpg") center / cover no-repeat fixed;
+}
+
+body.station-page-shibuya {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0.06)),
+    url("駅写真/渋谷駅20200525.jpg") center / cover no-repeat fixed;
+}
+
+body.station-page-shinagawa {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0.06)),
+    url("駅写真/Shinagawa_Station_-01.jpg") center / cover no-repeat fixed;
+}
+
+body.station-page-ueno {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0.06)),
+    url("駅写真/Ueno_Station_200610c.jpg") center / cover no-repeat fixed;
+}
+
 body.station-page-tokyo .station-title,
 body.station-page-akabane .station-title,
 body.station-page-omiya .station-title,
 body.station-page-ikebukuro .station-title,
 body.station-page-shinjuku .station-title,
-body.station-page-nagoya .station-title {
+body.station-page-nagoya .station-title,
+body.station-page-yokohama .station-title,
+body.station-page-shibuya .station-title,
+body.station-page-shinagawa .station-title,
+body.station-page-ueno .station-title {
   background: rgba(255, 255, 255, 0.82);
   border-radius: 16px;
   padding: 10px 16px;
@@ -83,7 +111,11 @@ body.station-page-akabane main > .container > p.muted,
 body.station-page-omiya main > .container > p.muted,
 body.station-page-ikebukuro main > .container > p.muted,
 body.station-page-shinjuku main > .container > p.muted,
-body.station-page-nagoya main > .container > p.muted {
+body.station-page-nagoya main > .container > p.muted,
+body.station-page-yokohama main > .container > p.muted,
+body.station-page-shibuya main > .container > p.muted,
+body.station-page-shinagawa main > .container > p.muted,
+body.station-page-ueno main > .container > p.muted {
   background: rgba(255, 255, 255, 0.82);
   border-radius: 12px;
   padding: 6px 10px;
@@ -793,6 +825,66 @@ textarea {
   justify-content: center;
 }
 
+.card.station-photo-yokohama {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
+    linear-gradient(0deg, var(--card-tint, transparent), var(--card-tint, transparent)),
+    url("駅写真/Yokohama_Station_20240630.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card.station-photo-shibuya {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
+    linear-gradient(0deg, var(--card-tint, transparent), var(--card-tint, transparent)),
+    url("駅写真/渋谷駅20200525.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card.station-photo-shinagawa {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
+    linear-gradient(0deg, var(--card-tint, transparent), var(--card-tint, transparent)),
+    url("駅写真/Shinagawa_Station_-01.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card.station-photo-ueno {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
+    linear-gradient(0deg, var(--card-tint, transparent), var(--card-tint, transparent)),
+    url("駅写真/Ueno_Station_200610c.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card.station-photo-shimbashi {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
+    linear-gradient(0deg, var(--card-tint, transparent), var(--card-tint, transparent)),
+    url("駅写真/JR_Shimbashi_Station_(2019-05-04)_04.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .card.station-photo-tokyo .card-title,
 .card.station-photo-tokyo .kv dt,
 .card.station-photo-tokyo .kv dd {
@@ -841,6 +933,46 @@ textarea {
 .card.station-photo-nagoya .kv dd,
 .card.station-photo-nagoya .tiny,
 .card.station-photo-nagoya .tiny a {
+  color: #f8fafc;
+}
+
+.card.station-photo-yokohama .card-title,
+.card.station-photo-yokohama .kv dt,
+.card.station-photo-yokohama .kv dd,
+.card.station-photo-yokohama .tiny,
+.card.station-photo-yokohama .tiny a {
+  color: #f8fafc;
+}
+
+.card.station-photo-shibuya .card-title,
+.card.station-photo-shibuya .kv dt,
+.card.station-photo-shibuya .kv dd,
+.card.station-photo-shibuya .tiny,
+.card.station-photo-shibuya .tiny a {
+  color: #f8fafc;
+}
+
+.card.station-photo-shinagawa .card-title,
+.card.station-photo-shinagawa .kv dt,
+.card.station-photo-shinagawa .kv dd,
+.card.station-photo-shinagawa .tiny,
+.card.station-photo-shinagawa .tiny a {
+  color: #f8fafc;
+}
+
+.card.station-photo-ueno .card-title,
+.card.station-photo-ueno .kv dt,
+.card.station-photo-ueno .kv dd,
+.card.station-photo-ueno .tiny,
+.card.station-photo-ueno .tiny a {
+  color: #f8fafc;
+}
+
+.card.station-photo-shimbashi .card-title,
+.card.station-photo-shimbashi .kv dt,
+.card.station-photo-shimbashi .kv dd,
+.card.station-photo-shimbashi .tiny,
+.card.station-photo-shimbashi .tiny a {
   color: #f8fafc;
 }
 
