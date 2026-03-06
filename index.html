@@ -8620,7 +8620,7 @@
             </details>
             <details>
               <summary>このサイトの評価はどうなってる</summary>
-              <p>完全に筆者の独断と偏見だよ。</p>
+              <p>完全に制作者と情報提供してくれた人の独断と偏見だよ!! 参考程度によろしくです。</p>
             </details>
             <details>
               <summary>このサイトの〇〇が違うよ</summary>
@@ -8722,7 +8722,7 @@
     <div class="container footer-inner">
       <div class="footer-left">
         <div class="footer-title">Stomach Pain Save</div>
-        <div class="tiny muted">腹痛持ちのための駅トイレ情報まとめ（試作）</div>
+        <div class="tiny muted">腹痛持ちのための駅トイレ情報まとめ Ver.1.1.1</div>
       </div>
       <div class="footer-right tiny">
         <a href="about.html">このサイトについて</a>
@@ -8922,6 +8922,45 @@
       });
     });
 
+    const stationCoordinateMap = {
+      "池袋": { lat: 35.72972222, lon: 139.71086111 },
+      "品川": { lat: 35.62822222, lon: 139.73869444 },
+      "上野": { lat: 35.71388889, lon: 139.77722222 },
+      "新橋": { lat: 35.66638889, lon: 139.75805556 },
+      "北千住": { lat: 35.74951667, lon: 139.80482778 },
+      "立川": { lat: 35.69788889, lon: 139.41394444 },
+      "大崎": { lat: 35.61972222, lon: 139.72855556 },
+      "柏": { lat: 35.86222222, lon: 139.97105556 },
+      "中野": { lat: 35.70583333, lon: 139.66555556 },
+      "吉祥寺": { lat: 35.70305556, lon: 139.58 },
+      "武蔵小杉": { lat: 35.57666667, lon: 139.65944444 },
+      "金山": { lat: 35.14302778, lon: 136.90083333 },
+      "赤羽": { lat: 35.77802778, lon: 139.72083333 },
+      "仙台": { lat: 38.26027778, lon: 140.88222222 },
+      "浦和": { lat: 35.85849167, lon: 139.65745278 },
+      "大船": { lat: 35.35361111, lon: 139.53111111 },
+      "松戸": { lat: 35.78433333, lon: 139.90063889 },
+      "国分寺": { lat: 35.70025, lon: 139.48025 },
+      "戸塚": { lat: 35.40061111, lon: 139.53419444 },
+      "八王子": { lat: 35.65555556, lon: 139.33888889 },
+      "神田": { lat: 35.69166667, lon: 139.77083333 },
+      "御茶ノ水": { lat: 35.69986111, lon: 139.76388889 },
+      "四ツ谷": { lat: 35.686, lon: 139.73066667 },
+      "飯田橋": { lat: 35.70205556, lon: 139.745 },
+      "恵比寿": { lat: 35.64666667, lon: 139.71013889 },
+      "春日部": { lat: 35.97999444, lon: 139.75238611 },
+      "水戸": { lat: 36.37090278, lon: 140.47607222 },
+      "甲府": { lat: 35.66716667, lon: 138.569 },
+      "大月": { lat: 35.61319444, lon: 138.94272222 },
+      "岩槻": { lat: 35.95005, lon: 139.69291667 },
+      "いわき": { lat: 37.05816667, lon: 140.89213889 },
+      "東京": { lat: 35.68083, lon: 139.76694 },
+      "新宿": { lat: 35.69056, lon: 139.69944 },
+      "大宮": { lat: 35.90639, lon: 139.62389 },
+      "名古屋": { lat: 35.1707722, lon: 136.8816028 },
+      "横浜": { lat: 35.46583, lon: 139.62278 },
+    };
+
     const findStationPinButton = (stationName) => {
       const key = canonicalStationName(stationName);
       return stationPinButtons.find((button) => {
@@ -8935,9 +8974,15 @@
         event.preventDefault();
         const card = link.closest(".card");
         const stationName = card?.dataset.station || "";
-        const pinButton = findStationPinButton(stationName);
-        if (pinButton) {
-          pinButton.click();
+        const stationKey = canonicalStationName(stationName);
+        const coord = stationCoordinateMap[stationKey];
+        if (coord) {
+          setMapCenter(coord.lat, coord.lon, `${normalizeStationName(stationName)}を表示中`);
+        } else {
+          const pinButton = findStationPinButton(stationName);
+          if (pinButton) {
+            pinButton.click();
+          }
         }
         scrollWithHeaderOffset(mapSection);
       });
@@ -9112,4 +9157,3 @@
   </script>
 </body>
 </html>
-
