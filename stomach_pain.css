@@ -578,6 +578,7 @@ textarea {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
   margin-top: 28px;
+  align-items: start;
 }
 
 .line-filter {
@@ -616,10 +617,140 @@ textarea {
   box-shadow: var(--shadow);
   transition: transform 0.25s ease;
   cursor: pointer;
+  align-self: start;
 }
 
 .card:hover {
   transform: translateY(-6px);
+}
+
+.card.station-photo-tokyo {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
+    linear-gradient(0deg, var(--card-tint, transparent), var(--card-tint, transparent)),
+    url("駅写真/Tokyo-STA_Marunouchi-Entrance_2023.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card.station-photo-akabane {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
+    linear-gradient(0deg, var(--card-tint, transparent), var(--card-tint, transparent)),
+    url("駅写真/Akabane-Sta-East.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card.station-photo-omiya {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
+    linear-gradient(0deg, var(--card-tint, transparent), var(--card-tint, transparent)),
+    url("駅写真/Omiya-STA_West.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card.station-photo-ikebukuro {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
+    linear-gradient(0deg, var(--card-tint, transparent), var(--card-tint, transparent)),
+    url("駅写真/East_entrance_of_Ikebukuro_Station_2023-11-09.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card.station-photo-shinjuku {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
+    linear-gradient(0deg, var(--card-tint, transparent), var(--card-tint, transparent)),
+    url("駅写真/JRE_Shinjuku-STA_South.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card.station-photo-nagoya {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
+    linear-gradient(0deg, var(--card-tint, transparent), var(--card-tint, transparent)),
+    url("駅写真/View_of_Nagoya_Station,_Tsubaki-cho_Nakamura_Ward_Nagoya_2022.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card.station-photo-tokyo .card-title,
+.card.station-photo-tokyo .kv dt,
+.card.station-photo-tokyo .kv dd {
+  color: #f8fafc;
+}
+
+.card.station-photo-tokyo .tiny,
+.card.station-photo-tokyo .tiny a {
+  color: #f8fafc;
+}
+
+.card.station-photo-akabane .card-title,
+.card.station-photo-akabane .kv dt,
+.card.station-photo-akabane .kv dd,
+.card.station-photo-akabane .tiny,
+.card.station-photo-akabane .tiny a {
+  color: #f8fafc;
+}
+
+.card.station-photo-omiya .card-title,
+.card.station-photo-omiya .kv dt,
+.card.station-photo-omiya .kv dd,
+.card.station-photo-omiya .tiny,
+.card.station-photo-omiya .tiny a {
+  color: #f8fafc;
+}
+
+.card.station-photo-ikebukuro .card-title,
+.card.station-photo-ikebukuro .kv dt,
+.card.station-photo-ikebukuro .kv dd,
+.card.station-photo-ikebukuro .tiny,
+.card.station-photo-ikebukuro .tiny a {
+  color: #f8fafc;
+}
+
+.card.card.station-photo-shinjuku .card-title,
+.card.station-photo-shinjuku .kv dt,
+.card.station-photo-shinjuku .kv dd,
+.card.station-photo-shinjuku .tiny,
+.card.station-photo-shinjuku .tiny a {
+  color: #f8fafc;
+}
+
+.card.station-photo-nagoya .card-title,
+.card.station-photo-nagoya .kv dt,
+.card.station-photo-nagoya .kv dd,
+.card.station-photo-nagoya .tiny,
+.card.station-photo-nagoya .tiny a {
+  color: #f8fafc;
+}
+
+.photo-credit {
+  font-size: 0.5rem;
+  margin: 8px 0 0;
+  line-height: 1.35;
 }
 
 .card[hidden] {
@@ -780,6 +911,11 @@ textarea {
 
 .tiny {
   font-size: 0.85rem;
+}
+
+.tiny.photo-credit {
+  font-size: 0.68rem;
+  line-height: 1.2;
 }
 
 .site-footer {

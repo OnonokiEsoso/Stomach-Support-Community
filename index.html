@@ -62,7 +62,7 @@
               <option value="jr-chuo">JR 中央本線</option>
               <option value="joban">常磐線</option>
             </select>
-            <input id="station-input" type="text" placeholder="駅名を入力（例: 大宮）" list="station-list" />
+            <input id="station-input" type="text" placeholder="駅名を入力（例: 東京）" list="station-list" />
             <button class="btn primary small" type="button" id="station-search">駅を探す</button>
           </div>
           <div class="hero-note" role="note" aria-label="注意">
@@ -73,6 +73,7 @@
             <div class="ad-body">広告を置く場合はここに埋め込み</div>
           </div>
           <datalist id="station-list">
+            <option value="東京駅" data-line="jr-chuo,joban"></option>
             <option value="大宮" data-line="tobu-urbanpark,saikyo,shonan-shinjuku"></option>
             <option value="北大宮" data-line="tobu-urbanpark"></option>
             <option value="大宮公園" data-line="tobu-urbanpark"></option>
@@ -192,7 +193,6 @@
             <option value="定光寺駅" data-line="jr-chuo"></option>
             <option value="田立駅" data-line="jr-chuo"></option>
             <option value="土岐市駅" data-line="jr-chuo"></option>
-            <option value="東京駅" data-line="jr-chuo,joban"></option>
             <option value="東山梨駅" data-line="jr-chuo"></option>
             <option value="東小金井駅" data-line="jr-chuo"></option>
             <option value="東中野駅" data-line="jr-chuo"></option>
@@ -310,7 +310,7 @@
 
         <div class="grid">
 
-          <article class="card" aria-label="駅情報カード " data-station="東京駅" data-line="jr-chuo,joban" data-link="stations/tokyo.html" role="link" tabindex="0">
+          <article class="card station-photo-tokyo" aria-label="駅情報カード " data-station="東京駅" data-line="jr-chuo,joban" data-link="stations/tokyo.html" role="link" tabindex="0">
             <header class="card-head">
               <h3 class="card-title"></h3>
             </header>
@@ -343,11 +343,15 @@
                 <a class="btn small" href="#" aria-label="地図リンク（未設定）">地図リンク</a>
                 <a class="btn small ghost" href="#submit">修正依頼</a>
               </div>
+
+              <p class="tiny muted photo-credit">
+                Photo: <a href="https://commons.wikimedia.org/w/index.php?curid=133826528" target="_blank" rel="noopener noreferrer">MaedaAkihiko</a> / <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>
+              </p>
             </div>
           </article>
 
 
-          <article class="card" aria-label="駅情報カード 赤羽駅" data-station="赤羽" data-line="saikyo,shonan-shinjuku" data-link="stations/akabane.html" role="link" tabindex="0">
+          <article class="card station-photo-akabane" aria-label="駅情報カード 赤羽駅" data-station="赤羽" data-line="saikyo,shonan-shinjuku" data-link="stations/akabane.html" role="link" tabindex="0">
             <header class="card-head">
               <h3 class="card-title">赤羽駅</h3>
             </header>
@@ -380,10 +384,13 @@
                 <a class="btn small" href="#" aria-label="地図リンク（未設定）">地図リンク</a>
                 <a class="btn small ghost" href="#submit">修正依頼</a>
               </div>
+              <p class="tiny muted photo-credit">
+                Photo: Nyao148 / CC BY 3.0
+              </p>
             </div>
           </article>
 
-          <article class="card" aria-label="駅情報カード 大宮駅" data-station="大宮" data-line="tobu-urbanpark,saikyo,shonan-shinjuku" data-link="stations/omiya.html" role="link" tabindex="0">
+          <article class="card station-photo-omiya" aria-label="駅情報カード 大宮駅" data-station="大宮" data-line="tobu-urbanpark,saikyo,shonan-shinjuku" data-link="stations/omiya.html" role="link" tabindex="0">
             <header class="card-head">
               <h3 class="card-title">大宮駅</h3>
             </header>
@@ -416,11 +423,14 @@
                 <a class="btn small" href="#" aria-label="地図リンク（未設定）">地図リンク</a>
                 <a class="btn small ghost" href="#submit">修正依頼</a>
               </div>
+              <p class="tiny muted photo-credit">
+                Photo: <a href="https://commons.wikimedia.org/w/index.php?curid=108340293" target="_blank" rel="noopener noreferrer">MaedaAkihiko</a> / <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>
+              </p>
             </div>
           </article>
 
 
-          <article class="card" aria-label="駅情報カード 池袋駅" data-station="池袋" data-line="saikyo,shonan-shinjuku" data-link="stations/ikebukuro.html" role="link" tabindex="0">
+          <article class="card station-photo-ikebukuro" aria-label="駅情報カード 池袋駅" data-station="池袋" data-line="saikyo,shonan-shinjuku" data-link="stations/ikebukuro.html" role="link" tabindex="0">
             <header class="card-head">
               <h3 class="card-title">池袋駅</h3>
             </header>
@@ -453,11 +463,14 @@
                 <a class="btn small" href="#" aria-label="地図リンク（未設定）">地図リンク</a>
                 <a class="btn small ghost" href="#submit">修正依頼</a>
               </div>
+              <p class="tiny muted photo-credit">
+                Photo: <a href="https://commons.wikimedia.org/w/index.php?curid=141975037" target="_blank" rel="noopener noreferrer">Asanagi</a> / <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.ja" target="_blank" rel="noopener noreferrer">CC0</a>
+              </p>
             </div>
           </article>
 
 
-          <article class="card" aria-label="駅情報カード 新宿駅" data-station="新宿" data-line="shonan-shinjuku,jr-chuo" data-link="stations/shinjuku.html" role="link" tabindex="0">
+          <article class="card station-photo-shinjuku" aria-label="駅情報カード 新宿駅" data-station="新宿" data-line="shonan-shinjuku,jr-chuo" data-link="stations/shinjuku.html" role="link" tabindex="0">
             <header class="card-head">
               <h3 class="card-title">新宿駅</h3>
             </header>
@@ -490,10 +503,13 @@
                 <a class="btn small" href="#" aria-label="地図リンク（未設定）">地図リンク</a>
                 <a class="btn small ghost" href="#submit">修正依頼</a>
               </div>
+              <p class="tiny muted photo-credit">
+                Photo: <a href="https://commons.wikimedia.org/w/index.php?curid=126202342" target="_blank" rel="noopener noreferrer">MaedaAkihiko</a> / <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>
+              </p>
             </div>
           </article>
 
-          <article class="card" aria-label="駅情報カード " data-station="名古屋駅" data-line="jr-chuo" data-link="" role="link" tabindex="0">
+          <article class="card station-photo-nagoya" aria-label="駅情報カード 名古屋駅" data-station="名古屋" data-line="jr-chuo" data-link="stations/nagoya.html" role="link" tabindex="0">
             <header class="card-head">
               <h3 class="card-title"></h3>
             </header>
@@ -526,6 +542,9 @@
                 <a class="btn small" href="#" aria-label="地図リンク（未設定）">地図リンク</a>
                 <a class="btn small ghost" href="#submit">修正依頼</a>
               </div>
+              <p class="tiny muted photo-credit">
+                Photo: <a href="https://commons.wikimedia.org/w/index.php?curid=123403982" target="_blank" rel="noopener noreferrer">Tomio344456</a> / <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>
+              </p>
             </div>
           </article>
 
@@ -8717,6 +8736,15 @@
       }
       return name.endsWith("駅") ? name : `${name}駅`;
     };
+    const canonicalStationName = (name) => (name || "").replace(/\s+/g, "").replace(/駅$/, "");
+    const majorStationNames = new Set([
+      "東京",
+      "赤羽",
+      "新宿",
+      "池袋",
+      "大宮",
+      "名古屋",
+    ]);
 
     stationCards.forEach((card) => {
       const name = card.dataset.station || "";
@@ -8896,8 +8924,13 @@
           .split(",")
           .map((item) => item.trim())
           .filter(Boolean);
-        const matchLine = line === "" || optionLines.includes(line);
-        option.disabled = !matchLine;
+        if (line === "") {
+          const isMajor = majorStationNames.has(canonicalStationName(option.value));
+          option.disabled = !isMajor;
+        } else {
+          const matchLine = optionLines.includes(line);
+          option.disabled = !matchLine;
+        }
       });
       if (stationInput.value !== "" && line !== "") {
         const match = options.some(
