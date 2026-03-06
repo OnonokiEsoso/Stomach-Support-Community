@@ -17,7 +17,7 @@
         </div>
       </div>
       <nav class="nav">
-        <a class="btn ghost" href="Stomach_pain_save_point.html">戻る</a>
+        <a class="btn ghost" href="index.html">戻る</a>
       </nav>
     </div>
   </header>
@@ -29,21 +29,21 @@
         <p class="muted">短時間で遊べるミニゲーム。</p>
       </div>
 
-      <div class="games-grid">
-        <section class="game-card" aria-labelledby="mine-title">
-          <div class="game-head">
-            <h3 id="mine-title">マインスイーパー</h3>
-            <button class="btn small" type="button" id="mine-reset">リセット</button>
-          </div>
-          <div class="game-board mine-board" id="mine-board" aria-label="マインスイーパー盤面"></div>
-          <p class="game-status" id="mine-status">15x15 / 地雷40</p>
-        </section>
-
+      <div class="games-grid single-game-grid">
         <section class="game-card" aria-labelledby="memory-title">
+          <h3 id="memory-title">絵合わせ</h3>
+          <div class="form-row">
+            <label for="memory-size">サイズ</label>
+            <select id="memory-size" name="memory-size">
+              <option value="4x4">4*4</option>
+              <option value="5x5">5*5</option>
+              <option value="6x6">6*6</option>
+            </select>
+          </div>
           <div class="game-head">
-            <h3 id="memory-title">絵合わせ</h3>
             <button class="btn small" type="button" id="memory-reset">リセット</button>
           </div>
+          <p class="game-status" id="memory-turn-counter">試行回数: 0</p>
           <div class="game-board memory-board" id="memory-board" aria-label="絵合わせ盤面"></div>
           <p class="game-status" id="memory-status">4x4 / 8ペア</p>
         </section>
@@ -52,217 +52,63 @@
   </main>
 
   <script>
-    const mineBoard = document.getElementById("mine-board");
-    const mineStatus = document.getElementById("mine-status");
-    const mineReset = document.getElementById("mine-reset");
-
-    const mineConfig = { size: 15, mines: 40 };
-    let mineState = [];
-    let mineRevealed = 0;
-    let mineOver = false;
-    let mineFirstClick = true;
-
-    const buildMineBoard = () => {
-      mineBoard.innerHTML = "";
-      mineState = [];
-      mineRevealed = 0;
-      mineOver = false;
-      mineStatus.textContent = "15x15 / 地雷40";
-      mineFirstClick = true;
-
-      const total = mineConfig.size * mineConfig.size;
-      const mines = new Set();
-      while (mines.size < mineConfig.mines) {
-        mines.add(Math.floor(Math.random() * total));
-      }
-
-      for (let i = 0; i < total; i += 1) {
-        const hasMine = mines.has(i);
-        mineState.push({ mine: hasMine, revealed: false });
-        const tile = document.createElement("button");
-        tile.className = "tile";
-        tile.type = "button";
-        tile.dataset.index = String(i);
-        let pressTimer = null;
-        tile.addEventListener("click", () => {
-          if (tile.dataset.longpress === "1") {
-            tile.dataset.longpress = "0";
-            return;
-          }
-          revealMineTile(i, tile);
-        });
-        tile.addEventListener("pointerdown", () => {
-          pressTimer = setTimeout(() => {
-            toggleFlag(i, tile);
-            tile.dataset.longpress = "1";
-          }, 450);
-        });
-        tile.addEventListener("pointerup", () => {
-          if (pressTimer) {
-            clearTimeout(pressTimer);
-          }
-        });
-        tile.addEventListener("pointerleave", () => {
-          if (pressTimer) {
-            clearTimeout(pressTimer);
-          }
-        });
-        tile.addEventListener("contextmenu", (event) => {
-          event.preventDefault();
-        });
-        mineBoard.appendChild(tile);
-      }
-    };
-
-    const countAdjacentMines = (index) => {
-      const size = mineConfig.size;
-      const row = Math.floor(index / size);
-      const col = index % size;
-      let count = 0;
-      for (let r = row - 1; r <= row + 1; r += 1) {
-        for (let c = col - 1; c <= col + 1; c += 1) {
-          if (r < 0 || c < 0 || r >= size || c >= size) continue;
-          const idx = r * size + c;
-          if (mineState[idx].mine) count += 1;
-        }
-      }
-      return count;
-    };
-
-    const pickInitialIndex = (fallbackIndex) => {
-      const size = mineConfig.size;
-      const centerRow = Math.floor(size / 2);
-      const centerCol = Math.floor(size / 2);
-      const candidates = [];
-      for (let i = 0; i < mineState.length; i += 1) {
-        if (mineState[i].mine) continue;
-        const row = Math.floor(i / size);
-        const col = i % size;
-        const dist = Math.abs(centerRow - row) + Math.abs(centerCol - col);
-        candidates.push({ i, dist });
-      }
-      candidates.sort((a, b) => a.dist - b.dist);
-      let oneIndex = -1;
-      for (const cand of candidates) {
-        const count = countAdjacentMines(cand.i);
-        if (count === 0) {
-          return cand.i;
-        }
-        if (count === 1 && oneIndex === -1) {
-          oneIndex = cand.i;
-        }
-      }
-      if (oneIndex !== -1) return oneIndex;
-      return fallbackIndex;
-    };
-
-    const toggleFlag = (index, tile) => {
-      if (mineOver || mineState[index].revealed) return;
-      const flagged = tile.classList.toggle("flag");
-      tile.textContent = flagged ? "F" : "";
-    };
-
-    const openTile = (index, tile) => {
-      if (mineState[index].revealed) return false;
-      mineState[index].revealed = true;
-      tile.classList.add("revealed");
-      tile.classList.remove("flag");
-      const count = countAdjacentMines(index);
-      tile.textContent = count === 0 ? "" : String(count);
-      mineRevealed += 1;
-      return count;
-    };
-
-    const revealZeroCluster = (startIndex) => {
-      const size = mineConfig.size;
-      const queue = [startIndex];
-      const visited = new Set();
-      while (queue.length) {
-        const current = queue.shift();
-        if (visited.has(current)) continue;
-        visited.add(current);
-        const tile = mineBoard.querySelector(`.tile[data-index='${current}']`);
-        if (!tile || mineState[current].mine) continue;
-        const count = openTile(current, tile);
-        if (count !== 0) continue;
-        const row = Math.floor(current / size);
-        const col = current % size;
-        for (let r = row - 1; r <= row + 1; r += 1) {
-          for (let c = col - 1; c <= col + 1; c += 1) {
-            if (r < 0 || c < 0 || r >= size || c >= size) continue;
-            const idx = r * size + c;
-            if (!visited.has(idx)) {
-              queue.push(idx);
-            }
-          }
-        }
-      }
-    };
-
-    const revealMineTile = (index, tile) => {
-      if (mineOver || mineState[index].revealed) return;
-      if (tile.classList.contains("flag")) return;
-      if (mineFirstClick) {
-        const picked = pickInitialIndex(index);
-        mineFirstClick = false;
-        const pickedTile = mineBoard.querySelector(`.tile[data-index='${picked}']`);
-        if (pickedTile) {
-          revealMineTile(picked, pickedTile);
-        }
-        return;
-      }
-      if (mineState[index].mine) {
-        tile.classList.add("revealed", "mine");
-        tile.textContent = "X";
-        mineOver = true;
-        mineStatus.textContent = "ゲームオーバー";
-        revealAllMines();
-        return;
-      }
-
-      const count = openTile(index, tile);
-      if (count === 0) {
-        revealZeroCluster(index);
-      }
-
-      if (mineRevealed === mineConfig.size * mineConfig.size - mineConfig.mines) {
-        mineStatus.textContent = "クリア！";
-        mineOver = true;
-      }
-    };
-
-    const revealAllMines = () => {
-      const tiles = mineBoard.querySelectorAll(".tile");
-      tiles.forEach((tile, idx) => {
-        if (mineState[idx].mine) {
-          tile.classList.add("revealed", "mine");
-          tile.textContent = "X";
-        }
-      });
-    };
-
-    mineReset.addEventListener("click", buildMineBoard);
-    buildMineBoard();
-
     const memoryBoard = document.getElementById("memory-board");
+    const memoryCard = document.querySelector(".game-card");
     const memoryStatus = document.getElementById("memory-status");
+    const memoryTurnCounter = document.getElementById("memory-turn-counter");
     const memoryReset = document.getElementById("memory-reset");
+    const memorySize = document.getElementById("memory-size");
     const memoryIcons = ["▲", "●", "■", "★", "◆", "❤", "✿", "☂"];
+    const memoryLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     let memoryTiles = [];
     let memoryFlipped = [];
     let memoryMatched = 0;
     let memoryLocked = false;
+    let memoryTurns = 0;
+    let memoryPairCount = 8;
+    let memoryBoardSize = 4;
+
+    const getBoardSize = () => {
+      const raw = memorySize?.value || "4x4";
+      const parsed = Number(raw.split("x")[0]);
+      return Number.isFinite(parsed) && parsed > 1 ? parsed : 4;
+    };
+
+    const getMemorySymbols = (pairCount) => {
+      const pool = [...memoryIcons, ...memoryLetters];
+      if (pairCount > pool.length) {
+        return Array.from({ length: pairCount }, (_, i) => String(i + 1));
+      }
+      return pool.slice(0, pairCount);
+    };
 
     const buildMemoryBoard = () => {
       memoryBoard.innerHTML = "";
+      const existingLayer = memoryCard?.querySelector(".confetti-layer");
+      if (existingLayer) {
+        existingLayer.remove();
+      }
       memoryTiles = [];
       memoryFlipped = [];
       memoryMatched = 0;
       memoryLocked = false;
-      memoryStatus.textContent = "4x4 / 8ペア";
+      memoryTurns = 0;
+      memoryTurnCounter.textContent = "試行回数: 0";
+      memoryBoardSize = getBoardSize();
+      const totalCells = memoryBoardSize * memoryBoardSize;
+      const hasFreeTile = totalCells % 2 === 1;
+      memoryPairCount = Math.floor(totalCells / 2);
+      memoryBoard.style.gridTemplateColumns = `repeat(${memoryBoardSize}, 1fr)`;
+      memoryStatus.textContent = hasFreeTile
+        ? `${memoryBoardSize}x${memoryBoardSize} / ${memoryPairCount}ペア + FREE1`
+        : `${memoryBoardSize}x${memoryBoardSize} / ${memoryPairCount}ペア`;
 
-      const pairs = [...memoryIcons, ...memoryIcons]
-        .sort(() => Math.random() - 0.5);
+      const symbols = getMemorySymbols(memoryPairCount);
+      const pairs = [...symbols, ...symbols];
+      if (hasFreeTile) {
+        pairs.push("FREE");
+      }
+      pairs.sort(() => Math.random() - 0.5);
 
       pairs.forEach((icon, index) => {
         const tile = document.createElement("button");
@@ -270,10 +116,45 @@
         tile.type = "button";
         tile.dataset.index = String(index);
         tile.dataset.icon = icon;
+        if (icon === "FREE") {
+          tile.classList.add("revealed", "matched");
+          tile.textContent = "FREE";
+          tile.disabled = true;
+        }
         tile.addEventListener("click", () => flipMemoryTile(tile));
         memoryTiles.push(tile);
         memoryBoard.appendChild(tile);
       });
+    };
+
+    const launchConfetti = () => {
+      if (!memoryCard) return;
+      const oldLayer = memoryCard.querySelector(".confetti-layer");
+      if (oldLayer) {
+        oldLayer.remove();
+      }
+      const layer = document.createElement("div");
+      layer.className = "confetti-layer";
+      const colors = ["#ff6b4a", "#f59e0b", "#10b981", "#38bdf8", "#e879f9", "#f43f5e", "#22d3ee"];
+      for (let i = 0; i < 84; i += 1) {
+        const piece = document.createElement("span");
+        piece.className = "confetti-piece";
+        const side = i % 2 === 0 ? 12 : 88;
+        piece.style.left = `${side + (Math.random() - 0.5) * 18}%`;
+        piece.style.backgroundColor = colors[i % colors.length];
+        piece.style.width = `${6 + Math.random() * 5}px`;
+        piece.style.height = `${8 + Math.random() * 8}px`;
+        piece.style.setProperty("--dx", `${(Math.random() - 0.5) * 260}px`);
+        piece.style.setProperty("--dy", `${150 + Math.random() * 200}px`);
+        piece.style.setProperty("--rot", `${300 + Math.random() * 540}deg`);
+        piece.style.animationDelay = `${Math.random() * 90}ms`;
+        piece.style.animationDuration = `${520 + Math.random() * 520}ms`;
+        layer.appendChild(piece);
+      }
+      memoryCard.appendChild(layer);
+      setTimeout(() => {
+        layer.remove();
+      }, 1200);
     };
 
     const flipMemoryTile = (tile) => {
@@ -291,13 +172,16 @@
     const checkMemoryPair = () => {
       const [first, second] = memoryFlipped;
       if (!first || !second) return;
+      memoryTurns += 1;
+      memoryTurnCounter.textContent = `試行回数: ${memoryTurns}`;
       if (first.dataset.icon === second.dataset.icon) {
         first.classList.add("matched");
         second.classList.add("matched");
         memoryMatched += 1;
         memoryFlipped = [];
-        if (memoryMatched === memoryIcons.length) {
+        if (memoryMatched === memoryPairCount) {
           memoryStatus.textContent = "クリア！";
+          launchConfetti();
         }
         return;
       }
@@ -313,6 +197,7 @@
     };
 
     memoryReset.addEventListener("click", buildMemoryBoard);
+    memorySize.addEventListener("change", buildMemoryBoard);
     buildMemoryBoard();
   </script>
 </body>

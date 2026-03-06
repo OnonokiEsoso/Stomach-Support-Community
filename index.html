@@ -8580,6 +8580,12 @@
 
     </section>
 
+    <section class="section section-distract">
+      <div class="container">
+        <a class="btn distract distract-full" href="games.html">気を逸らす</a>
+      </div>
+    </section>
+
     <section id="howto" class="section">
       <div class="container">
         <div class="faq">
@@ -8619,6 +8625,10 @@
             <details>
               <summary>このサイトの〇〇が違うよ</summary>
               <p>サイト内の「情報提供・修正依頼」で教えて！協力感謝します！</p>
+            </details>
+            <details>
+              <summary>このサイトについて</summary>
+              <p><a href="about.html">こちらをご覧ください</a></p>
             </details>
           </div>
         </div>
@@ -8702,8 +8712,6 @@
 
     
 
-    
-    <a class="btn distract" href="games.html">気を逸らす</a>
   </main>
 
   <button class="back-to-top" id="back-to-top" type="button" aria-label="トップに戻る">↑</button>
@@ -8768,6 +8776,34 @@
     const stationPinButtons = Array.from(document.querySelectorAll(".map-stations [data-lat]"));
     const lineSelect = document.getElementById("line-select");
     const stationList = document.getElementById("station-list");
+    const headerNavOffsetLinks = Array.from(
+      document.querySelectorAll('.site-header .nav a[href="#stations"], .site-header .nav a[href="#howto"]')
+    );
+
+    const scrollWithHeaderOffset = (target) => {
+      if (!target) {
+        return;
+      }
+      const header = document.querySelector(".site-header");
+      const headerOffset = (header?.getBoundingClientRect().height || 0) + 12;
+      const top = window.scrollY + target.getBoundingClientRect().top - headerOffset;
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    };
+
+    headerNavOffsetLinks.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        const hash = link.getAttribute("href");
+        if (!hash?.startsWith("#")) {
+          return;
+        }
+        const target = document.querySelector(hash);
+        if (!target) {
+          return;
+        }
+        event.preventDefault();
+        scrollWithHeaderOffset(target);
+      });
+    });
 
     const setMapCenter = (lat, lon, label) => {
       const delta = 0.01;
@@ -8885,13 +8921,18 @@
     const maxVisibleCards = 6;
     const filterStations = (shouldScroll = false) => {
       const query = stationInput.value.trim();
+      const normalizedQuery = canonicalStationName(query);
       const line = lineSelect.value;
       let visibleCount = 0;
       let matchedCount = 0;
       stationCards.forEach((card) => {
         const name = card.dataset.station || "";
+        const normalizedName = canonicalStationName(name);
         const cardLine = card.dataset.line || "";
-        const matchQuery = query === "" || name.includes(query);
+        const matchQuery =
+          query === "" ||
+          name.includes(query) ||
+          normalizedName.includes(normalizedQuery);
         const lines = cardLine.split(",").map((item) => item.trim()).filter(Boolean);
         const matchLine = line === "" || lines.includes(line);
         const match = matchQuery && matchLine;
