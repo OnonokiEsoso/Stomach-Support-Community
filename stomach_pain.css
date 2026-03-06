@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   color-scheme: only light;
   --ink: #111827;
   --muted: #475569;
@@ -27,6 +27,67 @@ body {
     radial-gradient(circle at 15% 10%, rgba(255, 227, 213, 0.9), transparent 45%),
     radial-gradient(circle at 90% 0%, rgba(191, 231, 223, 0.7), transparent 50%),
     linear-gradient(180deg, #fff7f0 0%, var(--sand) 60%, #fffaf5 100%);
+}
+
+body.station-page-tokyo {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0.06)),
+    url("駅写真/Tokyo-STA_Marunouchi-Entrance_2023.jpg") center / cover no-repeat fixed;
+}
+
+body.station-page-akabane {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0.06)),
+    url("駅写真/Akabane-Sta-East.jpg") center / cover no-repeat fixed;
+}
+
+body.station-page-omiya {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0.06)),
+    url("駅写真/Omiya-STA_West.jpg") center / cover no-repeat fixed;
+}
+
+body.station-page-ikebukuro {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0.06)),
+    url("駅写真/East_entrance_of_Ikebukuro_Station_2023-11-09.jpg") center / cover no-repeat fixed;
+}
+
+body.station-page-shinjuku {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0.06)),
+    url("駅写真/JRE_Shinjuku-STA_South.jpg") center / cover no-repeat fixed;
+}
+
+body.station-page-nagoya {
+  background:
+    linear-gradient(0deg, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0.06)),
+    url("駅写真/View_of_Nagoya_Station,_Tsubaki-cho_Nakamura_Ward_Nagoya_2022.jpg") center / cover no-repeat fixed;
+}
+
+body.station-page-tokyo .station-title,
+body.station-page-akabane .station-title,
+body.station-page-omiya .station-title,
+body.station-page-ikebukuro .station-title,
+body.station-page-shinjuku .station-title,
+body.station-page-nagoya .station-title {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 16px;
+  padding: 10px 16px;
+  width: fit-content;
+  margin: 0 auto 20px;
+}
+
+body.station-page-tokyo main > .container > p.muted,
+body.station-page-akabane main > .container > p.muted,
+body.station-page-omiya main > .container > p.muted,
+body.station-page-ikebukuro main > .container > p.muted,
+body.station-page-shinjuku main > .container > p.muted,
+body.station-page-nagoya main > .container > p.muted {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 12px;
+  padding: 6px 10px;
+  width: fit-content;
 }
 
 a {
@@ -1218,3 +1279,4 @@ textarea {
     gap: 8px !important;
   }
 }
+
