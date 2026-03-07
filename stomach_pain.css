@@ -1742,6 +1742,15 @@ textarea {
   flex-wrap: wrap;
 }
 
+.credits-callout .form-actions {
+  margin-top: 12px;
+  padding: 24px;
+  border-radius: 24px;
+  background: #fff;
+  border: 1px solid rgba(17, 24, 39, 0.08);
+  box-shadow: var(--shadow);
+}
+
 .tiny {
   font-size: 0.85rem;
 }
