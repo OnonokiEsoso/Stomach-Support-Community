@@ -282,14 +282,18 @@ textarea {
 }
 
 .brand-mark {
-  font-size: 1.6rem;
-  background: var(--night);
-  color: #fff;
+  font-size: 0;
+  background-color: #fff;
+  background-image: url("地図とトイレアイコンのサイン.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
   width: 44px;
   height: 44px;
   display: grid;
   place-items: center;
   border-radius: 14px;
+  overflow: hidden;
 }
 
 .brand-name {
