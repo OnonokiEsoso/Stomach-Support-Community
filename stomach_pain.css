@@ -284,7 +284,7 @@ textarea {
 .brand-mark {
   font-size: 0;
   background-color: #fff;
-  background-image: url("地図とトイレアイコンのサイン.png");
+  background-image: url("brand-icon.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -2015,4 +2015,5 @@ textarea {
     gap: 8px !important;
   }
 }
+
 
